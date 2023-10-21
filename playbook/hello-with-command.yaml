@@ -1,0 +1,8 @@
+---
+- name: Hello with command
+  hosts: target
+  gather_facts: no
+  tasks:
+    - name: Say hello
+      become: yes
+      command: echo "Hello, there"

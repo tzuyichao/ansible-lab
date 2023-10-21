@@ -1,0 +1,12 @@
+---
+- name: Install Python 3 and Ansible prerequisites
+  hosts: target
+  gather_facts: no
+  tasks:
+    - name: Update package cache
+      become: yes
+      raw: apt update
+    - name: Install Python3 & ansible
+      become: yes
+      raw: apt install -y python3 pip ansible
+
