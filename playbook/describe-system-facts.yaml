@@ -1,0 +1,9 @@
+---
+- name: Gather and Print System Facts
+  hosts: target
+  gather_facts: yes
+  tasks:
+    - name: Display Ansible Facts
+      debug:
+        var: ansible_facts
+
