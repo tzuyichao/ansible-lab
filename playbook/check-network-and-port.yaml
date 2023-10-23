@@ -1,0 +1,30 @@
+---
+- name: Check Network and Ports
+  hosts: target
+  tasks:
+    - name: Check if host is reachable
+      ping:
+      register: ping_result
+    - name: Display ping result
+      debug:
+        msg: "{{ inventory_hostname }} is reachable"
+      when: ping_result.ping | default('') == 'pong'
+    - name: Check is specific ports are open
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: "{{ item }}"
+        state: started
+        timeout: 5
+      register: port_results
+      with_items:
+        - 22
+        - 80
+        - 443
+        - 9093
+        - 9092
+      ignore_errors: yes
+    - name: Display port results
+      debug:
+        msg: "Port {{ item.item }} on {{ inventory_hostname }} is {{ 'open' if item.state == 'started' else 'close or not reachable' }}"
+      with_items: "{{ port_results.results }}"
+
